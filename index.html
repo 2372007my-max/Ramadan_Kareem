@@ -5,96 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>رمضان كريم</title>
 
-<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'El Messiri',sans-serif}
 
-/* صفحة 3D */
-#intro3d{
-position:fixed;
-width:100%;
-height:100%;
-background:#020b12;
-display:flex;
-justify-content:center;
-align-items:center;
-perspective:800px;
-z-index:9999;
-color:#ffd369;
-font-size:40px;
-}
-
-#introText{
-transform-style:preserve-3d;
-animation:introAnim 3s ease-in-out forwards;
-text-shadow:0 0 25px rgba(255,211,105,.8);
-}
-
-@keyframes introAnim{
-0%{transform:rotateY(90deg) scale(.5);opacity:0;}
-50%{opacity:1;}
-100%{transform:rotateY(0) scale(1);}
-}
-
-/* شاشة التحميل */
-#loader{
-position:fixed;
-width:100%;
-height:100%;
-background:#08131d;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:999;
-}
-
-.spinner{
-width:55px;
-height:55px;
-border:5px solid rgba(255,255,255,.2);
-border-top:5px solid #ffd369;
-border-radius:50%;
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{to{transform:rotate(360deg);}}
-
-/* الخلفية */
-body{
-background:radial-gradient(circle at top,#102c40,#08131d);
-height:100vh;
-overflow:hidden;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-}
-
-.moon{
+/* خلفية مجرة */
+.galaxy{
 position:absolute;
-top:60px;
-right:60px;
-width:90px;height:90px;
-background:#ffd369;
-border-radius:50%;
-box-shadow:-25px 0 0 18px #08131d,0 0 25px rgba(255,211,105,.4);
-animation:floatMoon 4s infinite ease-in-out;
+width:200%;
+height:200%;
+background:
+radial-gradient(circle at 30% 30%, rgba(255,255,255,.15), transparent),
+radial-gradient(circle at 70% 60%, rgba(120,150,255,.2), transparent),
+radial-gradient(circle at center, #020b12, #000);
+animation:galaxyMove 40s linear infinite;
+transform-origin:center;
+z-index:-1;
 }
-@keyframes floatMoon{50%{transform:translateY(10px)}}
+@keyframes galaxyMove{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
+}
 
+/* النجوم */
 .star{
-position:absolute;width:2px;height:2px;background:white;
-animation:twinkle 2s infinite alternate;
+position:absolute;width:2px;height:2px;background:white;opacity:.8;
 }
-@keyframes twinkle{to{opacity:.3}}
 
-.lantern{
-position:absolute;top:-100px;font-size:40px;
-animation:fall 12s linear infinite;
+/* الاسم بخط عربي متوهج */
+.name{
+font-family:'Aref Ruqaa',serif;
+font-size:34px;
+color:#ffd369;
+animation:glow 2s ease-in-out infinite alternate;
+text-align:center;
 }
-@keyframes fall{to{transform:translateY(120vh)}}
+@keyframes glow{
+from{text-shadow:0 0 5px #ffd369;}
+to{text-shadow:0 0 25px #ffd369;}
+}
 
 .container{
 background:rgba(255,255,255,0.08);
@@ -108,68 +58,64 @@ box-shadow:0 15px 40px rgba(0,0,0,.5);
 }
 
 input,button{
-width:100%;padding:13px;margin-top:12px;border:none;border-radius:12px;
+width:100%;
+padding:13px;
+margin-top:12px;
+border:none;
+border-radius:12px;
 }
 
-button{background:#ffd369;font-weight:bold;cursor:pointer}
+button{
+background:linear-gradient(45deg,#ffd369,#ffb347);
+font-weight:bold;
+cursor:pointer;
+}
+
 .hidden{display:none}
-
-h1{color:#ffd369}
-
-.signature{margin-top:10px;opacity:.8}
+.sharePage{font-size:18px;line-height:1.8}
 </style>
 </head>
 
 <body>
 
-<div id="intro3d">
-<div id="introText">رمضان كريم</div>
-</div>
+<div class="galaxy" id="galaxy"></div>
 
-<div id="loader" class="hidden">
-<div class="spinner"></div>
-<div>جاري التحميل...</div>
-</div>
-
-<audio id="music" loop>
-<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8a4d7baf1.mp3">
+<!-- أصوات -->
+<audio id="typeSound">
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_efc7fd0a56.mp3">
 </audio>
 
-<!-- دعاء صوتي -->
-<audio id="duaAudio">
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/audio/2022/04/27/audio_1c07e4e0c3.mp3">
+</audio>
+
+<audio id="welcomeAudio">
 <source src="https://cdn.pixabay.com/audio/2023/03/21/audio_5c58a4c7c2.mp3">
 </audio>
 
-<div class="moon"></div>
-
-<div class="container hidden" id="loginBox">
+<!-- شاشة الترحيب -->
+<div class="container" id="loginBox">
 <h2>🌙 تهنئة رمضان</h2>
 <input type="password" id="password" placeholder="اكتب الباسورد">
 <button onclick="login()">دخول</button>
 </div>
 
 <div class="container hidden" id="welcomeBox">
-<h1 id="title"></h1>
-<div id="duaText"></div>
-<div class="signature">تهنئة من مؤمن ياسر ✨</div>
+<div class="name" id="visitorName"></div>
+<p>رمضان كريم 🌙</p>
+<button onclick="openShare()">مشاركة التهنئة</button>
+</div>
+
+<div class="container hidden sharePage" id="shareBox">
+رمضان كريم 🌙<br>
+كل سنة وأنتم طيبين ❤️<br><br>
+<button onclick="shareWhats()">مشاركة واتساب</button>
 </div>
 
 <script>
 
-/* الانتقال من 3D إلى التحميل */
-setTimeout(()=>{
-document.getElementById("intro3d").style.display="none";
-document.getElementById("loader").classList.remove("hidden");
-
-setTimeout(()=>{
-document.getElementById("loader").style.display="none";
-document.getElementById("loginBox").classList.remove("hidden");
-},2000);
-
-},3000);
-
 /* نجوم */
-for(let i=0;i<80;i++){
+for(let i=0;i<120;i++){
 let s=document.createElement("div");
 s.className="star";
 s.style.left=Math.random()*100+"%";
@@ -177,42 +123,59 @@ s.style.top=Math.random()*100+"%";
 document.body.appendChild(s);
 }
 
-/* فوانيس */
-setInterval(()=>{
-let l=document.createElement("div");
-l.className="lantern";
-l.innerHTML="🏮";
-l.style.left=Math.random()*100+"%";
-document.body.appendChild(l);
-setTimeout(()=>l.remove(),12000);
-},1500);
+/* صوت الكتابة */
+document.getElementById("password").addEventListener("input",()=>{
+document.getElementById("typeSound").currentTime=0;
+document.getElementById("typeSound").play();
+});
 
-function login(){
-if(document.getElementById("password").value==="رمضان كريم"){
-let name=prompt("اكتب اسمك");
-document.getElementById("title").innerText="رمضان كريم يا "+name;
+/* حفظ اسم الزائر */
+function showWelcome(name){
+document.getElementById("visitorName").innerText="رمضان كريم يا "+name;
 document.getElementById("loginBox").classList.add("hidden");
 document.getElementById("welcomeBox").classList.remove("hidden");
 document.getElementById("music").play();
-rotateDua();
+document.getElementById("welcomeAudio").play();
+localStorage.setItem("visitorName",name);
+}
+
+/* تسجيل الدخول */
+function login(){
+if(document.getElementById("password").value==="رمضان كريم"){
+let savedName = localStorage.getItem("visitorName");
+if(savedName){
+showWelcome(savedName);
+}else{
+let name=prompt("اكتب اسمك");
+showWelcome(name);
+}
 }else alert("الباسورد غير صحيح");
 }
 
-/* أدعية */
-const duas=[
-"اللهم بلغنا رمضان لا فاقدين ولا مفقودين",
-"اللهم تقبل منا الصيام والقيام",
-"اللهم ارزقنا ليلة القدر"
-];
-
-function rotateDua(){
-let i=0;
-setInterval(()=>{
-document.getElementById("duaText").innerText=duas[i];
-document.getElementById("duaAudio").play();
-i=(i+1)%duas.length;
-},7000);
+/* مشاركة */
+function openShare(){
+document.getElementById("welcomeBox").classList.add("hidden");
+document.getElementById("shareBox").classList.remove("hidden");
 }
+
+function shareWhats(){
+let text="رمضان كريم 🌙";
+window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+}
+
+/* Parallax حركة المجرة */
+document.addEventListener("mousemove",e=>{
+let x=e.clientX/window.innerWidth;
+let y=e.clientY/window.innerHeight;
+document.getElementById("galaxy").style.transform=`rotate(${x*15}deg)`;
+});
+
+/* للأجهزة الموبايل */
+window.addEventListener("deviceorientation",e=>{
+let x=e.gamma/45; // يمين/يسار
+let y=e.beta/45;  // أعلى/أسفل
+document.getElementById("galaxy").style.transform=`rotateX(${-y*10}deg) rotateY(${x*10}deg)`;
+});
 
 </script>
 </body>
