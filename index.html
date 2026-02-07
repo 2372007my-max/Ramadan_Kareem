@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>رمضان كريم</title>
+<title>رمضان كريم VIP</title>
 
 <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
 
@@ -13,19 +13,13 @@
 /* خلفية مجرة */
 .galaxy{
 position:absolute;
-width:200%;
-height:200%;
+width:100%;
+height:100%;
 background:
 radial-gradient(circle at 30% 30%, rgba(255,255,255,.15), transparent),
 radial-gradient(circle at 70% 60%, rgba(120,150,255,.2), transparent),
 radial-gradient(circle at center, #020b12, #000);
-animation:galaxyMove 40s linear infinite;
-transform-origin:center;
 z-index:-1;
-}
-@keyframes galaxyMove{
-from{transform:rotate(0deg);}
-to{transform:rotate(360deg);}
 }
 
 /* النجوم */
@@ -33,28 +27,31 @@ to{transform:rotate(360deg);}
 position:absolute;width:2px;height:2px;background:white;opacity:.8;
 }
 
-/* الاسم بخط عربي متوهج */
+/* اسم متوهج */
 .name{
 font-family:'Aref Ruqaa',serif;
-font-size:34px;
+font-size:28px;
 color:#ffd369;
 animation:glow 2s ease-in-out infinite alternate;
 text-align:center;
+margin-bottom:15px;
 }
 @keyframes glow{
 from{text-shadow:0 0 5px #ffd369;}
 to{text-shadow:0 0 25px #ffd369;}
 }
 
+/* الحاويات */
 .container{
-background:rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.06);
 backdrop-filter:blur(14px);
-padding:30px;
-border-radius:22px;
+padding:25px;
+border-radius:20px;
 text-align:center;
-width:92%;
-max-width:420px;
-box-shadow:0 15px 40px rgba(0,0,0,.5);
+width:90%;
+max-width:400px;
+box-shadow:0 12px 35px rgba(0,0,0,.5);
+transition:all 0.3s ease;
 }
 
 input,button{
@@ -63,22 +60,104 @@ padding:13px;
 margin-top:12px;
 border:none;
 border-radius:12px;
+font-size:16px;
+transition:all 0.2s ease;
 }
 
+input:focus{outline:none;box-shadow:0 0 8px #ffd369;}
 button{
 background:linear-gradient(45deg,#ffd369,#ffb347);
 font-weight:bold;
 cursor:pointer;
+color:#000;
 }
+
+button:hover{opacity:0.9;transform:scale(1.02);}
 
 .hidden{display:none}
 .sharePage{font-size:18px;line-height:1.8}
+
+/* شاشة التحميل */
+#loader{
+position:fixed;
+width:100%;
+height:100%;
+background:#08131d;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:9999;
+color:white;
+font-size:24px;
+text-align:center;
+}
+
+.loader-spinner{
+width:55px;
+height:55px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #ffd369;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:20px;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* شاشة ترحيب */
+#welcomeScreen{
+position:fixed;
+width:100%;
+height:100%;
+background:#020b12;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+color:#ffd369;
+z-index:9998;
+text-align:center;
+}
+
+#welcomeScreen h1{
+font-family:'Aref Ruqaa',serif;
+font-size:40px;
+animation:glow 2s ease-in-out infinite alternate;
+margin-bottom:20px;
+}
+
+/* Responsive */
+@media(max-width:768px){
+.name{font-size:24px;}
+.container{padding:20px;}
+input,button{padding:12px;font-size:15px;}
+#welcomeScreen h1{font-size:32px;}
+}
+
+@media(max-width:480px){
+.name{font-size:20px;}
+.container{padding:18px;}
+input,button{padding:10px;font-size:14px;}
+#welcomeScreen h1{font-size:26px;}
+}
 </style>
 </head>
 
 <body>
 
 <div class="galaxy" id="galaxy"></div>
+
+<!-- شاشة التحميل -->
+<div id="loader">
+<div class="loader-spinner"></div>
+<div>جاري التحميل...</div>
+</div>
+
+<!-- شاشة الترحيب -->
+<div id="welcomeScreen" class="hidden">
+<h1>رمضان كريم 🌙</h1>
+<p>مرحباً بك في موقع التهنئة 🎉</p>
+</div>
 
 <!-- أصوات -->
 <audio id="typeSound">
@@ -93,19 +172,21 @@ cursor:pointer;
 <source src="https://cdn.pixabay.com/audio/2023/03/21/audio_5c58a4c7c2.mp3">
 </audio>
 
-<!-- شاشة الترحيب -->
+<!-- شاشة تسجيل الدخول -->
 <div class="container" id="loginBox">
 <h2>🌙 تهنئة رمضان</h2>
 <input type="password" id="password" placeholder="اكتب الباسورد">
 <button onclick="login()">دخول</button>
 </div>
 
+<!-- شاشة الترحيب باسم الزائر -->
 <div class="container hidden" id="welcomeBox">
 <div class="name" id="visitorName"></div>
 <p>رمضان كريم 🌙</p>
 <button onclick="openShare()">مشاركة التهنئة</button>
 </div>
 
+<!-- صفحة المشاركة -->
 <div class="container hidden sharePage" id="shareBox">
 رمضان كريم 🌙<br>
 كل سنة وأنتم طيبين ❤️<br><br>
@@ -129,7 +210,7 @@ document.getElementById("typeSound").currentTime=0;
 document.getElementById("typeSound").play();
 });
 
-/* حفظ اسم الزائر */
+/* وظيفة عرض الترحيب */
 function showWelcome(name){
 document.getElementById("visitorName").innerText="رمضان كريم يا "+name;
 document.getElementById("loginBox").classList.add("hidden");
@@ -137,6 +218,17 @@ document.getElementById("welcomeBox").classList.remove("hidden");
 document.getElementById("music").play();
 document.getElementById("welcomeAudio").play();
 localStorage.setItem("visitorName",name);
+}
+
+/* مشاركة */
+function openShare(){
+document.getElementById("welcomeBox").classList.add("hidden");
+document.getElementById("shareBox").classList.remove("hidden");
+}
+
+function shareWhats(){
+let text="رمضان كريم 🌙";
+window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
 }
 
 /* تسجيل الدخول */
@@ -152,31 +244,23 @@ showWelcome(name);
 }else alert("الباسورد غير صحيح");
 }
 
-/* مشاركة */
-function openShare(){
-document.getElementById("welcomeBox").classList.add("hidden");
-document.getElementById("shareBox").classList.remove("hidden");
-}
+/* ترتيب الشاشات: Loading -> Welcome -> الموقع */
+window.addEventListener("load",()=>{
+// عرض شاشة التحميل 2 ثانية
+setTimeout(()=>{
+document.getElementById("loader").classList.add("hidden");
+document.getElementById("welcomeScreen").classList.remove("hidden");
+document.getElementById("welcomeAudio").play();
 
-function shareWhats(){
-let text="رمضان كريم 🌙";
-window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
-}
+// بعد 3 ثواني ننتقل لشاشة تسجيل الدخول
+setTimeout(()=>{
+document.getElementById("welcomeScreen").classList.add("hidden");
+document.getElementById("loginBox").classList.remove("hidden");
+},3000);
 
-/* Parallax حركة المجرة */
-document.addEventListener("mousemove",e=>{
-let x=e.clientX/window.innerWidth;
-let y=e.clientY/window.innerHeight;
-document.getElementById("galaxy").style.transform=`rotate(${x*15}deg)`;
-});
-
-/* للأجهزة الموبايل */
-window.addEventListener("deviceorientation",e=>{
-let x=e.gamma/45; // يمين/يسار
-let y=e.beta/45;  // أعلى/أسفل
-document.getElementById("galaxy").style.transform=`rotateX(${-y*10}deg) rotateY(${x*10}deg)`;
+},2000);
 });
 
 </script>
 </body>
-</html>
+  </html>
